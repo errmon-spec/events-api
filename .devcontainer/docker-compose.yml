@@ -1,0 +1,73 @@
+name: errmon-events-api
+
+services:
+  devcontainer:
+    container_name: errmon-events-api-devcontainer
+    image: errmon-events-api-devcontainer:0.1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sleep", "infinity"]
+    restart: no
+    env_file: ../.env
+    environment:
+      SSH_AUTH_SOCK: ${SSH_AUTH_SOCK:?err}
+      DATABASE_HOST: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+      PGHOST: postgres
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGPORT: 5432
+      BUNDLE_PATH: /app/vendor/bundle
+    volumes:
+      - ${SSH_AUTH_SOCK:?err}:${SSH_AUTH_SOCK:?err}:ro
+      - ../:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  runner:
+    extends: devcontainer
+    command: ["/bin/bash"]
+
+  web:
+    extends: runner
+    container_name: errmon-events-api-web
+    command: ["bin/puma", "-C", "config/puma.rb"]
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1"
+
+  postgres:
+    container_name: errmon-events-api-postgres
+    image: postgres-ulid-ext:0.1.0
+    restart: no
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-U", "postgres"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1"
+
+volumes:
+  postgres-data:

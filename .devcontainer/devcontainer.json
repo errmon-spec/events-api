@@ -1,0 +1,98 @@
+{
+  "name": "errmon-events-api",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "devcontainer",
+	"runServices": [
+		"devcontainer"
+	],
+	"workspaceFolder": "/app",
+	"overrideCommand": false,
+	"initializeCommand": {
+		"assign-compose-project-name": "touch .env; grep -qwF COMPOSE_PROJECT_NAME .env || echo COMPOSE_PROJECT_NAME=errmon-events-api >> .env"
+	},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "GitHub.copilot",
+        "GitHub.vscode-github-actions",
+        "eamodio.gitlens",
+        "exiasr.hadolint",
+        "redhat.vscode-yaml",
+        "shopify.ruby-lsp",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "[json][jsonc]": {
+          "editor.formatOnSave": true
+        },
+        "[ruby]": {
+          "editor.defaultFormatter": "Shopify.ruby-lsp",
+          "editor.formatOnSave": true,
+          "editor.formatOnType": false,
+          "editor.semanticHighlighting.enabled": true
+        },
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.quickSuggestions": {
+          "strings": "on"
+        },
+        "editor.tabSize": 2,
+        "errorLens.disableLineComments": {
+          "rubocop": "# rubocop:disable $code SAME_LINE"
+        },
+        "files.exclude": {
+          ".bundle": true,
+          ".git": true,
+          ".ruby-lsp": true,
+          "node_modules": true,
+          "vendor/bundle": true
+        },
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "files.trimTrailingWhitespace": true,
+        "git.branchProtection": [
+          "main",
+          "master",
+          "prod"
+        ],
+        "gitlens.telemetry.enabled": false,
+        "json.format.enable": true,
+        "rubyLsp.enableExperimentalFeatures": false,
+        "rubyLsp.enabledFeatures": {
+          "codeActions": true,
+          "codeLens": true,
+          "completion": true,
+          "definition": true,
+          "diagnostics": true,
+          "documentHighlights": true,
+          "documentLink": false,
+          "documentSymbols": true,
+          "foldingRanges": false,
+          "formatting": true,
+          "hover": true,
+          "inlayHint": true,
+          "onTypeFormatting": false,
+          "selectionRanges": true,
+          "semanticHighlighting": true,
+          "signatureHelp": true,
+          "workspaceSymbol": true
+        },
+        "rubyLsp.formatter": "rubocop",
+        "rubyLsp.rubyVersionManager": "none",
+        "rubyLsp.yjit": true,
+        "search.exclude": {
+          ".bundle": true,
+          ".git": true,
+          ".ruby-lsp": true,
+          "coverage": true,
+          "node_modules": true,
+          "tmp": true,
+          "vendor/bundle": true
+        },
+        "telemetry.telemetryLevel": "off"
+      }
+    }
+  }
+}
