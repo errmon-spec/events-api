@@ -1,0 +1,235 @@
+require:
+  - rubocop-minitest
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  ActiveSupportExtensionsEnabled: true
+  Exclude:
+    - ".bundle/**/*"
+    - ".git/**/*"
+    - ".github/**/*"
+    - ".ruby-lsp/**/*"
+    - ".vscode/**/*"
+    - "app/assets/**/*"
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "log/**/*"
+    - "node_modules/**/*"
+    - "public/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+
+# Bundler/GemVersion:
+#   Enabled: true
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/ClassStructure:
+  Enabled: true
+  ExpectedOrder:
+    - module_inclusion
+    - constants
+    - public_attribute_macros
+    - association
+    - macros
+    - public_class_methods
+    - initializer
+    - public_methods
+    - protected_attribute_macros
+    - protected_methods
+    - private_attribute_macros
+    - private_methods
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/LineLength:
+  AutoCorrect: false
+  Max: 120
+
+Layout/MultilineHashBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SingleLineBlockChain:
+  Enabled: true
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Naming/BlockParameterName:
+  AllowNamesEndingInNumbers: false
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: required
+
+Style/AutoResourceCleanup:
+  Enabled: true
+
+Style/ClassMethodsDefinitions:
+  EnforcedStyle: self_class
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/EndlessMethod:
+  EnforcedStyle: disallow
+
+Style/FetchEnvVar:
+  Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: unannotated
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always_true
+  SafeAutoCorrect: true
+
+Style/ImplicitRuntimeError:
+  Enabled: true
+
+Style/InverseMethods:
+  InverseMethods:
+    ":<": ":>="
+    ":==": ":!="
+    ":=~": ":!~"
+    ":>": ":<="
+    ":any?": ":none?"
+    ":blank?": ":present?"
+    ":even?": ":odd?"
+    ":present?": ":blank?"
+
+Style/InvertibleUnlessCondition:
+  Enabled: true
+
+Style/IpAddresses:
+  Enabled: true
+
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+Style/MultilineMethodSignature:
+  Enabled: true
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/OptionHash:
+  Enabled: true
+
+Style/ReturnNil:
+  Enabled: true
+
+Style/Send:
+  Enabled: true
+
+Style/StabbyLambdaParentheses:
+  EnforcedStyle: require_no_parentheses
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators
+
+Style/YodaExpression:
+  Enabled: true
+
+Rails/Date:
+  EnforcedStyle: strict
+
+Rails/DefaultScope:
+  Enabled: true
+
+Rails/EnvironmentVariableAccess:
+  Enabled: true
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/I18nLazyLookup:
+  EnforcedStyle: explicit
+
+Rails/NotNullColumn:
+  Enabled: false
+
+Rails/PluckId:
+  Enabled: true
+
+Rails/RequestReferer:
+  EnforcedStyle: referrer
+
+Rails/RequireDependency:
+  Enabled: true
+
+Rails/ReversibleMigrationMethodDefinition:
+  Enabled: true
+
+Rails/SafeNavigation:
+  ConvertTry: true
+
+Rails/SaveBang:
+  Enabled: true
+
+Rails/ShortI18n:
+  EnforcedStyle: aggressive
+
+Rails/TimeZone:
+  EnforcedStyle: strict
+
+Lint/MissingSuper:
+  Enabled: false
