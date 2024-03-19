@@ -110,6 +110,10 @@ Naming/MemoizedInstanceVariableName:
 Style/AutoResourceCleanup:
   Enabled: true
 
+Style/ClassAndModuleChildren:
+  Exclude:
+    - "test/**/*_test.rb"
+
 Style/ClassMethodsDefinitions:
   EnforcedStyle: self_class
 
