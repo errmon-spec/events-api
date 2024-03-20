@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ProjectManager
-  class ProjectContract < Dry::Validation::Contract
+  class ProjectContract < ApplicationContract
     json do
       required(:project_id).filled(:string)
       required(:token).filled(:string)
