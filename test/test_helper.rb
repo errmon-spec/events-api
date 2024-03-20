@@ -4,6 +4,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'minitest/mock'
+require 'minitest/spec'
 
 module ActiveSupport
   class TestCase
@@ -14,6 +15,7 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    extend Minitest::Spec::DSL
 
     Dir[Rails.root.join('test/test_helpers/**/*.rb')].each { |file| require file }
   end

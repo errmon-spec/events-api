@@ -44,6 +44,6 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
     result = ItemQueueManager::ItemPublisher.call(project, payload)
 
     assert_predicate result, :failure?
-    assert_equal expected_errors, result.failure.errors.to_h # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
+    assert_equal expected_errors, result.failure.errors.to_h
   end
 end
