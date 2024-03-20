@@ -11,6 +11,7 @@ gem 'oj', '~> 3.16'
 gem 'pg', '~> 1.5'
 gem 'puma', '~> 6.4'
 gem 'rails', '~> 7.1.3'
+gem 'sneakers', '~> 2.3'
 
 group :development, :test do
   gem 'factory_bot_rails', '~> 6.4'

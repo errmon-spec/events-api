@@ -45,6 +45,7 @@ module ErrmonEventsApi
 
     # Errmon
     config.time_zone = 'Brasilia'
+    config.instance_name = 'local'
 
     # Thread Pool
     config.max_threads = ENV.fetch('RAILS_MAX_THREADS', 5).to_i
@@ -59,5 +60,8 @@ module ErrmonEventsApi
     ActiveSupport.on_load(:active_record_postgresqladapter) do
       self.datetime_type = :timestamptz
     end
+
+    # RabbitMQ
+    config.rabbitmq_url = ENV['RABBITMQ_URL']
   end
 end
