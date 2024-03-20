@@ -4,6 +4,7 @@ require 'test_helper'
 
 class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
   test 'publishes the item to RabbitMQ' do
+    project = build(:project)
     payload = {
       library: 'errmon.js',
       revision: 'v1.0.0',
@@ -14,10 +15,10 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
     }
 
     mock = Minitest::Mock.new
-    mock.expect :call, nil, [payload], content_type: 'application/json'
+    mock.expect :call, nil, [{ project_id: project.project_id, data: payload }], content_type: 'application/json'
     result =
       Sneakers.stub :publish, mock do
-        ItemQueueManager::ItemPublisher.call(payload)
+        ItemQueueManager::ItemPublisher.call(project, payload)
       end
 
     assert_predicate result, :success?
@@ -25,6 +26,7 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
   end
 
   test 'returns a failure object when payload is invalid' do
+    project = build(:project)
     payload = {
       kind: 'NoMethodError',
       message: 123,
@@ -39,7 +41,7 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
       stack_trace: ['is missing'],
     }
 
-    result = ItemQueueManager::ItemPublisher.call(payload)
+    result = ItemQueueManager::ItemPublisher.call(project, payload)
 
     assert_predicate result, :failure?
     assert_equal expected_errors, result.failure.errors.to_h # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods

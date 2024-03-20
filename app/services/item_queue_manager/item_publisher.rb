@@ -8,7 +8,8 @@ module ItemQueueManager
       new(*).call
     end
 
-    def initialize(payload, contract: ItemContract.new)
+    def initialize(project, payload, contract: ItemContract.new)
+      @project = project
       @payload = payload
       @contract = contract
     end
@@ -17,13 +18,18 @@ module ItemQueueManager
       result = contract.call(payload)
       return Failure(result) if result.errors.present?
 
-      Sneakers.publish(result.to_h, content_type: 'application/json')
+      event = {
+        project_id: project.project_id,
+        data: result.to_h,
+      }
 
-      Success()
+      Sneakers.publish(event, content_type: 'application/json')
+
+      Success(event)
     end
 
     private
 
-    attr_reader :payload, :contract
+    attr_reader :project, :payload, :contract
   end
 end
