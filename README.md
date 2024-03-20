@@ -1,24 +1,21 @@
-# README
+# Microsserviço: API de Eventos
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Testes
 
-Things you may want to cover:
+[![continuous-integration](https://github.com/errmon-spec/events-api/actions/workflows/continuous-integration.yml/badge.svg?branch=main)](https://github.com/errmon-spec/events-api/actions/workflows/continuous-integration.yml)
 
-* Ruby version
+## Desenvolvimento local
 
-* System dependencies
+Este projeto oferece suporte à contêineres de desenvolvimento (dev container).
 
-* Configuration
+### Docker compose
 
-* Database creation
+```bash
+docker compose -f .devcontainer/docker-compose.yml run --rm runner
+```
 
-* Database initialization
+### VS Code
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+devcontainer open .
+```
