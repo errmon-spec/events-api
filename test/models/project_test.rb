@@ -28,7 +28,7 @@ class ProjectTest < ActiveSupport::TestCase
     project = Project.new
 
     assert_not project.save
-    assert_includes project.errors.messages[:project_id], "can't be blank"
+    assert_includes project.errors.messages[:project_id], 'não pode ficar em branco'
   end
 
   test 'validates uniqueness of project_id' do
@@ -36,13 +36,13 @@ class ProjectTest < ActiveSupport::TestCase
     project = Project.new(project_id: existing_project.project_id)
 
     assert_not project.save
-    assert_includes project.errors.messages[:project_id], 'has already been taken'
+    assert_includes project.errors.messages[:project_id], 'já está em uso'
   end
 
   test 'validates presence of token' do
     project = Project.new
 
     assert_not project.save
-    assert_includes project.errors.messages[:token], "can't be blank"
+    assert_includes project.errors.messages[:token], 'não pode ficar em branco'
   end
 end

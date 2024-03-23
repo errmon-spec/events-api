@@ -45,6 +45,9 @@ module ErrmonEventsApi
 
     # Errmon
     config.time_zone = 'Brasilia'
+    config.i18n.available_locales = %i[en pt-BR]
+    config.i18n.default_locale = :'pt-BR'
+    config.i18n.fallbacks = %i[en]
     config.instance_name = 'local'
 
     # Thread Pool
