@@ -50,18 +50,34 @@ module ErrmonEventsApi
     # Thread Pool
     config.max_threads = ENV.fetch('RAILS_MAX_THREADS', 5).to_i
 
-    # PostgreSQL
+    ##
+    ## Postgres
+    ##
+
     config.database_url = ENV['DATABASE_URL']
     config.database_statement_timeout = ENV.fetch('DATABASE_STATEMENT_TIMEOUT', '10s')
     config.database_connect_timeout = 1
     config.database_checkout_timeout = 1
     config.database_pool_size = config.max_threads
+
     config.active_record.db_warnings_action = :report
+
     ActiveSupport.on_load(:active_record_postgresqladapter) do
       self.datetime_type = :timestamptz
     end
 
-    # RabbitMQ
+    ##
+    ## RabbitMQ
+    ##
+
     config.rabbitmq_url = ENV['RABBITMQ_URL']
+
+    ##
+    ## Performance
+    ##
+
+    config.action_view.frozen_string_literal = true
+    config.action_dispatch.cookies_serializer = :message_pack
+    config.active_support.message_serializer = :message_pack
   end
 end
