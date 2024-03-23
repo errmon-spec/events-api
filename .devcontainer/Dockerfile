@@ -13,15 +13,16 @@ RUN apt-get update -qq \
         libpq-dev \
         postgresql-client \
         ssh \
+        vim \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
 ENV HADOLINT_VERSION="2.12.0"
 RUN case "$(dpkg --print-architecture)" in \
-      arm64) hadolintArch="arm64" ;; \
-      *) hadolintArch="x86_64" ;; \
+      arm64) HADOLINT_ARCH="arm64" ;; \
+      *)     HADOLINT_ARCH="x86_64" ;; \
     esac \
-    && curl -fsSL "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-${hadolintArch}" \
+    && curl -fsSL "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-${HADOLINT_ARCH}" \
             --output /usr/bin/hadolint \
     && chmod +x /usr/bin/hadolint
 
