@@ -8,7 +8,7 @@ module ItemQueueManager
       new(*).call
     end
 
-    def initialize(project, payload, contract: ItemContract.new)
+    def initialize(project, payload, contract: ItemContract)
       @project = project
       @payload = payload
       @contract = contract
@@ -16,7 +16,7 @@ module ItemQueueManager
 
     def call
       result = contract.call(payload)
-      return Failure(result) if result.errors.present?
+      return Failure(result) if result.failure?
 
       event = {
         project_id: project.project_id,
