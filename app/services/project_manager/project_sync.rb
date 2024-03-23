@@ -2,18 +2,20 @@
 
 module ProjectManager
   class ProjectSync
+    include Dry::Monads[:result]
+
     def self.call(*)
       new(*).call
     end
 
-    def initialize(payload, contract: ProjectContract.new)
+    def initialize(payload, contract: ProjectContract)
       @payload = payload
       @contract = contract
     end
 
     def call
       result = contract.call(payload)
-      raise InvalidProjectError.new('Invalid project', result) if result.errors.present?
+      return Failure(result) if result.failure?
 
       normalized_payload = result.to_h
 
@@ -24,7 +26,7 @@ module ProjectManager
         record_timestamps: true,
       )
 
-      upsert_result.first['id']
+      Success(upsert_result.first['id'])
     end
 
     private

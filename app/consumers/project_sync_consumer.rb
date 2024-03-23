@@ -11,7 +11,9 @@ class ProjectSyncConsumer
     retry_max_times: 10
 
   def work(payload)
-    ProjectManager.sync(payload)
+    result = ProjectManager.sync(payload)
+    return reject! if result.failure?
+
     ack!
   end
 end

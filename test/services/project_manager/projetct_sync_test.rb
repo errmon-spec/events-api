@@ -3,23 +3,20 @@
 require 'test_helper'
 
 class ProjectManager::ProjectSyncTest < ActiveSupport::TestCase
-  test 'creates a new project if it does not exist' do
-    project_id = ULID.generate
-    token = SecureRandom.hex
-    payload = { project_id:, token: }
+  test 'creates a new project' do
+    payload = { project_id: ULID.generate, token: SecureRandom.hex }
 
-    result_id =
-      assert_difference -> { Project.count }, 1 do
-        ProjectManager.sync(payload)
-      end
+    result = ProjectManager.sync(payload)
 
-    project = Project.find(result_id)
+    assert_predicate result, :success?
 
-    assert_equal project_id, project.project_id
-    assert_equal token, project.token
+    project = Project.find(result.value!)
+
+    assert_equal payload[:project_id], project.project_id
+    assert_equal payload[:token], project.token
   end
 
-  test 'updates the token of an existing project' do
+  test 'updates an existing project' do
     existing_project = create(:project)
     new_token = SecureRandom.hex
     payload = { project_id: existing_project.project_id, token: new_token }
@@ -31,19 +28,21 @@ class ProjectManager::ProjectSyncTest < ActiveSupport::TestCase
     assert_equal new_token, existing_project.reload.token
   end
 
-  test 'raises InvalidProjectError if project_id is not present' do
+  test 'fails when project_id is not present' do
     payload = { token: SecureRandom.hex }
 
-    assert_raises ProjectManager::InvalidProjectError do
-      ProjectManager.sync(payload)
-    end
+    result = ProjectManager.sync(payload)
+
+    assert_predicate result, :failure?
+    assert_equal ['deve estar presente'], result.failure.errors[:project_id]
   end
 
-  test 'raises InvalidProjectError if token is not present' do
+  test 'fails when token is not present' do
     payload = { project_id: ULID.generate }
 
-    assert_raises ProjectManager::InvalidProjectError do
-      ProjectManager.sync(payload)
-    end
+    result = ProjectManager.sync(payload)
+
+    assert_predicate result, :failure?
+    assert_equal ['deve estar presente'], result.failure.errors[:token]
   end
 end
