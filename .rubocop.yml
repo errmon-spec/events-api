@@ -21,9 +21,6 @@ AllCops:
     - "tmp/**/*"
     - "vendor/**/*"
 
-# Bundler/GemVersion:
-#   Enabled: true
-
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 
