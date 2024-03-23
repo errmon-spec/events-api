@@ -21,9 +21,15 @@ services:
       PGPASSWORD: postgres
       PGPORT: 5432
       BUNDLE_PATH: /app/vendor/bundle
+      HISTFILE: /root/history.d/.bash_history
+      HISTFILESIZE: -1
+      HISTSIZE: -1
+      HISTCONTROL: erasedups:ignoreboth
+      PROMPT_COMMAND: history -a
     volumes:
       - ${SSH_AUTH_SOCK:?err}:${SSH_AUTH_SOCK:?err}:ro
       - ../:/app
+      - history:/root/history.d
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,7 +56,7 @@ services:
 
   postgres:
     container_name: errmon-events-api-postgres
-    image: postgres-ulid-ext:0.1.0
+    image: ghcr.io/errmon-spec/errmon-spec/postgres:6a09632
     restart: no
     environment:
       POSTGRES_PASSWORD: postgres
@@ -70,4 +76,5 @@ services:
           cpus: "1"
 
 volumes:
+  history:
   postgres-data:
