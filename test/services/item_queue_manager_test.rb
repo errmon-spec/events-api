@@ -7,13 +7,8 @@ class ItemQueueManagerTest < ActiveSupport::TestCase
     project = build(:project)
     payload = { type: 'NoMethodError', message: 'undefined method `foo\' for nil:NilClass' }
 
-    mock = Minitest::Mock.new
-    mock.expect :call, nil, [project, payload]
-
-    ItemQueueManager::ItemPublisher.stub :call, mock do
+    assert_called ItemQueueManager::ItemPublisher, :call, project, payload do
       ItemQueueManager.add(project, payload)
     end
-
-    assert_mock mock
   end
 end
