@@ -16,6 +16,8 @@ class ProjectSyncConsumerTest < ActiveSupport::TestCase
     consumer = ProjectSyncConsumer.new
     payload = { project_id: ULID.generate, token: SecureRandom.hex }
 
-    assert_equal :ack, consumer.work(payload)
+    mock_call ProjectManager, :sync, payload do
+      assert_equal :ack, consumer.work(payload)
+    end
   end
 end
