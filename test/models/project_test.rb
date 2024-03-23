@@ -14,7 +14,7 @@ class ProjectTest < ActiveSupport::TestCase
     test 'returns nil for invalid project id' do
       project = create(:project)
 
-      assert_nil Project.by_id_and_token('invalid', project.token).take
+      assert_nil Project.by_id_and_token(ULID.generate, project.token).take
     end
 
     test 'returns nil for invalid token' do
@@ -22,12 +22,6 @@ class ProjectTest < ActiveSupport::TestCase
 
       assert_nil Project.by_id_and_token(project.project_id, 'invalid').take
     end
-  end
-
-  test 'returns nil for invalid project id' do
-    project = create(:project)
-
-    assert_nil Project.by_id_and_token('invalid', project.token).take
   end
 
   test 'should not save project without project_id' do

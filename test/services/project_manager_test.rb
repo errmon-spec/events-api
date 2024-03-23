@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ProjectManagerTest < ActiveSupport::TestCase
   test 'calls ProjectSync#call' do
-    payload = { project_id: SecureRandom.uuid, token: SecureRandom.hex(20) }
+    payload = { project_id: ULID.generate, token: SecureRandom.hex }
 
     mock = Minitest::Mock.new
     mock.expect :call, nil, [payload]

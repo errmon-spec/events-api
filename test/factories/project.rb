@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :project do
-    project_id { SecureRandom.uuid }
-    token { SecureRandom.hex(20) }
+    project_id { ULID.generate }
+    token { SecureRandom.hex }
   end
 end

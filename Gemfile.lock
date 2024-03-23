@@ -276,6 +276,7 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    ulid (1.4.0)
     unicode-display_width (2.5.0)
     webrick (1.8.1)
     websocket-driver (0.7.6)
@@ -305,6 +306,7 @@ DEPENDENCIES
   rubocop-minitest (~> 0.35)
   rubocop-rails (~> 2.24)
   sneakers (~> 2.3)
+  ulid (~> 1.4)
 
 RUBY VERSION
    ruby 3.3.0p0

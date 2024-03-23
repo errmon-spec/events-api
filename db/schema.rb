@@ -13,9 +13,10 @@
 ActiveRecord::Schema[7.1].define(version: 2024_03_19_204226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "ulid"
 
   create_table "projects", force: :cascade do |t|
-    t.string "project_id", null: false
+    t.ulid "project_id", null: false
     t.string "token", null: false
     t.datetime "created_at", default: -> { "now()" }, null: false
     t.datetime "updated_at", default: -> { "now()" }, null: false

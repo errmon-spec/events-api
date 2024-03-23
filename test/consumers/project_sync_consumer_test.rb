@@ -5,7 +5,8 @@ require 'test_helper'
 class ProjectSyncConsumerTest < ActiveSupport::TestCase
   test 'calls ProjectManager.sync' do
     consumer = ProjectSyncConsumer.new
-    payload = { project_id: SecureRandom.uuid, token: SecureRandom.hex(20) }
+    payload = { project_id: ULID.generate, token: SecureRandom.hex }
+    payload = { project_id: ULID.generate, token: SecureRandom.hex }
 
     mock = Minitest::Mock.new
     mock.expect :call, nil, [payload]
@@ -19,7 +20,7 @@ class ProjectSyncConsumerTest < ActiveSupport::TestCase
 
   test 'acks' do
     consumer = ProjectSyncConsumer.new
-    payload = { project_id: SecureRandom.uuid, token: SecureRandom.hex(20) }
+    payload = { project_id: ULID.generate, token: SecureRandom.hex }
 
     mock = Minitest::Mock.new
     mock.expect :call, nil, [payload]
