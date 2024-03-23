@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 module AssertCalledMatcher
-  def assert_called(klass, method, *args, **kargs, &)
+  def mock_call(klass, method, *args, **kargs, &)
     mock = Minitest::Mock.new
     mock.expect :call, nil, [*args], **kargs
 
     klass.stub(method, mock, &)
+
+    mock
+  end
+
+  def assert_called(...)
+    mock = mock_call(...)
 
     assert_mock mock
   end
