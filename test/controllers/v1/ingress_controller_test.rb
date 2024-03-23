@@ -5,7 +5,7 @@ require 'test_helper'
 class V1::IngressControllerTest < ActionDispatch::IntegrationTest
   test 'returns HTTP 202 when valid params' do
     project = create(:project)
-    payload = {
+    reported_item_attributes = {
       library: 'errmon.js',
       revision: 'v1.0.0',
       level: 'error',
@@ -13,12 +13,15 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
       message: 'undefined method `foo\' for nil:NilClass',
       stack_trace: 'app/models/user.rb:1:in `foo\'',
     }
+    expected_event_payload = {
+      project_id: project.project_id,
+      data: reported_item_attributes,
+    }
 
-    assert_enqueued project, payload do
-      post v1_ingress_create_url, headers: authorization_headers(project), params: payload
-    end
+    post v1_ingress_create_url, headers: authorization_headers(project), params: reported_item_attributes
 
     assert_response :accepted
+    assert_published 'item.reported', expected_event_payload
   end
 
   test 'returns HTTP 422 when missing required params' do
@@ -55,14 +58,5 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unauthorized
     assert_equal '{"error":"invalid project credentials"}', @response.body
-  end
-
-  def assert_enqueued(project, payload, &)
-    mock = Minitest::Mock.new
-    mock.expect :call, nil, [{ project_id: project.project_id, data: payload }], content_type: 'application/json'
-
-    Sneakers.stub(:publish, mock, &)
-
-    assert_mock mock
   end
 end

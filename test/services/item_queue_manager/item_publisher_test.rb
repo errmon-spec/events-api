@@ -5,7 +5,7 @@ require 'test_helper'
 class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
   test 'publishes the item to RabbitMQ' do
     project = build(:project)
-    payload = {
+    reported_item_attributes = {
       library: 'errmon.js',
       revision: 'v1.0.0',
       level: 'error',
@@ -13,16 +13,15 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
       message: 'undefined method `foo\' for nil:NilClass',
       stack_trace: 'app/models/user.rb:1:in `foo\'',
     }
+    expected_event_payload = {
+      project_id: project.project_id,
+      data: reported_item_attributes,
+    }
 
-    mock = Minitest::Mock.new
-    mock.expect :call, nil, [{ project_id: project.project_id, data: payload }], content_type: 'application/json'
-    result =
-      Sneakers.stub :publish, mock do
-        ItemQueueManager::ItemPublisher.call(project, payload)
-      end
+    result = ItemQueueManager::ItemPublisher.call(project, reported_item_attributes)
 
     assert_predicate result, :success?
-    assert_mock mock
+    assert_published 'item.reported', expected_event_payload
   end
 
   test 'returns a failure object when payload is invalid' do

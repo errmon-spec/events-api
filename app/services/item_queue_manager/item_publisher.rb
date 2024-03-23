@@ -23,7 +23,7 @@ module ItemQueueManager
         data: result.to_h,
       }
 
-      Sneakers.publish(event, content_type: 'application/json')
+      RabbitPublisher.publish('item.reported', event)
 
       Success(event)
     end

@@ -6,6 +6,8 @@ require 'rails/test_help'
 require 'minitest/mock'
 require 'minitest/spec'
 
+RabbitPublisher.adapter = RabbitPublisher::TestAdapter.instance
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
