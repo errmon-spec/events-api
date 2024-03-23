@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby file: File.join(__dir__, '.ruby-version')
 
-gem 'bootsnap', require: false
+gem 'bootsnap', '~> 1.18'
 gem 'dry-monads', '~> 1.6'
 gem 'dry-struct', '~> 1.6'
 gem 'dry-validation', '~> 1.10'
@@ -20,6 +20,8 @@ gem 'ulid', '~> 1.4'
 group :development, :test do
   gem 'factory_bot_rails', '~> 6.4'
   gem 'rubocop', '~> 1.62', require: false
+  gem 'rubocop-factory_bot', '~> 2.25', require: false
   gem 'rubocop-minitest', '~> 0.35', require: false
+  gem 'rubocop-performance', '~> 1.20', require: false
   gem 'rubocop-rails', '~> 2.24', require: false
 end

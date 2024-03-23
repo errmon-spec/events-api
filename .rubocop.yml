@@ -1,25 +1,37 @@
 require:
+  - rubocop-factory_bot
   - rubocop-minitest
+  - rubocop-performance
   - rubocop-rails
 
 AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
+  SuggestExtensions: false
   ActiveSupportExtensionsEnabled: true
+  DisplayStyleGuide: true
   Exclude:
-    - ".bundle/**/*"
-    - ".git/**/*"
-    - ".github/**/*"
-    - ".ruby-lsp/**/*"
-    - ".vscode/**/*"
-    - "app/assets/**/*"
-    - "bin/**/*"
-    - "db/schema.rb"
-    - "log/**/*"
-    - "node_modules/**/*"
-    - "public/**/*"
-    - "tmp/**/*"
-    - "vendor/**/*"
+    - .bundle/**/*
+    - .devcontainer/**/*
+    - .git/**/*
+    - .github/**/*
+    - .ruby-lsp/**/*
+    - .vscode/**/*
+    - app/assets/**/*
+    - app/frontend/**/*
+    - app/javascript/**/*
+    - bin/**/*
+    - coverage/**/*
+    - db/schema.rb
+    - log/**/*
+    - node_modules/**/*
+    - public/**/*
+    - storage/**/*
+    - tmp/**/*
+    - vendor/**/*
+
+Bundler/GemVersion:
+  Enabled: true
 
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
@@ -30,24 +42,110 @@ Layout/BlockAlignment:
 Layout/CaseIndentation:
   EnforcedStyle: end
 
+# Estrutura que satisfaz meu TOC.
 Layout/ClassStructure:
   Enabled: true
   ExpectedOrder:
-    - module_inclusion
+    - module_inclusions
+    - default_scope
     - constants
-    - public_attribute_macros
-    - association
-    - macros
+    # rails module/class attr_* macros:
+    - thread_mattr_accessor
+    - thread_mattr_reader
+    - thread_mattr_writter
+    - thread_cattr_accessor
+    - thread_cattr_reader
+    - thread_cattr_writter
+    - mattr_accessor
+    - mattr_reader
+    - mattr_writter
+    - cattr_accessor
+    - cattr_reader
+    - cattr_writter
+    # active model attribute macros:
+    - attribute
+    # public attr_* macros:
+    - public_attr_accessor
+    - public_attr_reader
+    - public_attr_writer
+    # public delegate:
+    - public_delegate
+    # enums:
+    - enum
+    # associations:
+    - belongs_to
+    - has_one
+    - has_many
+    - has_and_belongs_to_many
+    # scopes:
+    - scope
+    # macros:
+    - has_encrypted
+    - has_secure_password
+    - devise
+    - other_macros
+    # validations:
+    - validate
+    - validates
+    - validates_uniqueness_of
+    - validates_presence_of
+    - validates_inclusion_of
+    - validates_with
+    # callbacks:
+    - after_initialize
+    - before_validation
+    - after_validation
+    - before_save
+    - around_save
+    - before_create
+    - around_create
+    - after_create
+    - before_update
+    - around_update
+    - after_update
+    - before_destroy
+    - around_destroy
+    - after_destroy
+    - after_save
+    - after_commit
+    - after_rollback
+    - after_find
+    - after_touch
+    # class methods:
     - public_class_methods
+    # initialize:
     - initializer
+    # public methods:
     - public_methods
-    - protected_attribute_macros
+    # protected attr_* macros:
+    - protected_attr_accessor
+    - protected_attr_reader
+    - protected_attr_writer
+    # protected methods:
     - protected_methods
-    - private_attribute_macros
+    # private attr_* macros:
+    - private_attr_accessor
+    - private_attr_reader
+    - private_attr_writer
+    # private delegate:
+    - private_delegate
+    # private methods:
     - private_methods
-
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
+  Categories:
+    module_inclusions:
+      - include
+      - prepend
+      - extend
+    other_macros:
+      - accepts_nested_attributes_for
+      - from_queue
+      - has_many_attached
+      - has_one_attached
+      - has_rich_text
+      - queue_as
+      - serialize
+      - store
+      - visitable
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
@@ -101,93 +199,13 @@ Metrics/ModuleLength:
 Naming/BlockParameterName:
   AllowNamesEndingInNumbers: false
 
+Naming/InclusiveLanguage:
+  Enabled: true
+
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 
-Style/AutoResourceCleanup:
-  Enabled: true
-
-Style/ClassAndModuleChildren:
-  Exclude:
-    - "test/**/*_test.rb"
-
-Style/ClassMethodsDefinitions:
-  EnforcedStyle: self_class
-
-Style/Documentation:
-  Enabled: false
-
-Style/EmptyMethod:
-  EnforcedStyle: expanded
-
-Style/EndlessMethod:
-  EnforcedStyle: disallow
-
-Style/FetchEnvVar:
-  Enabled: false
-
-Style/FormatStringToken:
-  EnforcedStyle: unannotated
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: always_true
-  SafeAutoCorrect: true
-
-Style/ImplicitRuntimeError:
-  Enabled: true
-
-Style/InverseMethods:
-  InverseMethods:
-    ":<": ":>="
-    ":==": ":!="
-    ":=~": ":!~"
-    ":>": ":<="
-    ":any?": ":none?"
-    ":blank?": ":present?"
-    ":even?": ":odd?"
-    ":present?": ":blank?"
-
-Style/InvertibleUnlessCondition:
-  Enabled: true
-
-Style/IpAddresses:
-  Enabled: true
-
-Style/MethodCalledOnDoEndBlock:
-  Enabled: true
-
-Style/MultilineMethodSignature:
-  Enabled: true
-
-Style/NegatedIf:
-  Enabled: false
-
-Style/OptionHash:
-  Enabled: true
-
-Style/ReturnNil:
-  Enabled: true
-
-Style/Send:
-  Enabled: true
-
-Style/StabbyLambdaParentheses:
-  EnforcedStyle: require_no_parentheses
-
-Style/TrailingCommaInArguments:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/UnlessLogicalOperators:
-  Enabled: true
-  EnforcedStyle: forbid_logical_operators
-
-Style/YodaExpression:
+Performance/SelectMap:
   Enabled: true
 
 Rails/Date:
@@ -235,5 +253,76 @@ Rails/ShortI18n:
 Rails/TimeZone:
   EnforcedStyle: strict
 
-Lint/MissingSuper:
+Style/AutoResourceCleanup:
+  Enabled: true
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/**/*_test.rb
+
+Style/CollectionMethods:
+  Enabled: true
+
+Style/Documentation:
   Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/EndlessMethod:
+  EnforcedStyle: disallow
+
+Style/FetchEnvVar:
+  Enabled: false
+
+Style/FormatStringToken:
+  MaxUnannotatedPlaceholdersAllowed: 3
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always_true
+  SafeAutoCorrect: true
+
+Style/InverseMethods:
+  InverseMethods:
+    ":blank?": ":present?"
+    ":present?": ":blank?"
+
+Style/InvertibleUnlessCondition:
+  Enabled: true
+  InverseMethods:
+    ":blank?": ":present?"
+    ":present?": ":blank?"
+
+Style/IpAddresses:
+  Enabled: true
+
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+Style/MultilineMethodSignature:
+  Enabled: true
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/ReturnNil:
+  Enabled: true
+
+Style/Send:
+  Enabled: true
+
+Style/StabbyLambdaParentheses:
+  EnforcedStyle: require_no_parentheses
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators

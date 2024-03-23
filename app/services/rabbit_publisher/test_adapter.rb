@@ -6,6 +6,7 @@ module RabbitPublisher
 
     def initialize
       @events = Hash.new { |hash, key| hash[key] = [] }
+      super
     end
 
     def publish(routing_key, payload)
