@@ -1,0 +1,13 @@
+pt-BR:
+  dry_validation:
+    errors:
+      key?: deve estar presente
+      filled?: não pode estar vazio
+
+      int?: deve ser um número inteiro
+      str?: deve ser uma sequência de caracteres
+
+      included_in?:
+        arg:
+          default: "deve ser um destes valores: %{list}"
+          range: "deve estar entre: %{list_left} - %{list_right}"

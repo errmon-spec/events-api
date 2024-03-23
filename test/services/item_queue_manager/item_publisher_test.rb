@@ -32,12 +32,12 @@ class ItemQueueManager::ItemPublisherTest < ActiveSupport::TestCase
     }
 
     expected_errors = {
-      library: ['is missing'],
-      revision: ['is missing'],
-      level: ['is missing'],
-      type: ['is missing'],
-      message: ['must be a string'],
-      stack_trace: ['is missing'],
+      library: ['deve estar presente'],
+      revision: ['deve estar presente'],
+      level: ['deve estar presente'],
+      type: ['deve estar presente'],
+      message: ['deve ser uma sequência de caracteres'],
+      stack_trace: ['deve estar presente'],
     }
 
     result = ItemQueueManager::ItemPublisher.call(project, payload)

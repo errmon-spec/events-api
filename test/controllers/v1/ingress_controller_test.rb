@@ -37,7 +37,7 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
     post v1_ingress_create_url, headers: authorization_headers(project), params: payload
 
     assert_response :unprocessable_entity
-    assert_equal '{"errors":{"message":["is missing"]}}', @response.body
+    assert_equal '{"errors":{"message":["deve estar presente"]}}', @response.body
   end
 
   test 'returns HTTP 401 without credentials' do

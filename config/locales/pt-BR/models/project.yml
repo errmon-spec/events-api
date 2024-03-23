@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      project:
+        one: Projeto
+        other: Projetos
+    attributes:
+      project:
+        project_id: ID do Projeto
+        token: Token
