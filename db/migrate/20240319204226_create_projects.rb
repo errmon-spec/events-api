@@ -6,7 +6,7 @@ class CreateProjects < ActiveRecord::Migration[7.1]
       t.string :project_id, null: false
       t.string :token, null: false
 
-      t.timestamps
+      t.timestamps default: -> { 'now()' }
     end
 
     add_index :projects, :project_id, unique: true
