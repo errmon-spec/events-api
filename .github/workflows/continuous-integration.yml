@@ -32,7 +32,7 @@ jobs:
     timeout-minutes: 5
     services:
       postgres:
-        image: postgres:16.2
+        image: ghcr.io/errmon-spec/errmon-spec/postgres:6a09632
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
