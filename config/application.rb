@@ -47,7 +47,16 @@ module ErrmonEventsApi
     config.time_zone = 'Brasilia'
     config.i18n.available_locales = %i[en pt-BR]
     config.i18n.default_locale = :'pt-BR'
-    config.instance_name = 'local'
+
+    # Introspection
+    config.container_app_name = ENV['FLY_APP_NAME'] || 'errmon-events-api'
+    config.container_process = ENV['FLY_PROCESS_GROUP'] || 'web'
+    config.container_id = ENV['FLY_ALLOC_ID'] || 'local'
+    config.instance_name = "#{config.container_app_name}--#{config.container_process}-#{config.container_id}"
+
+    # Security
+    config.action_dispatch.tld_length = Integer(ENV['RAILS_TLD_LENGTH'] || 1)
+    config.app_rails_host = ENV['RAILS_HOST'].presence
 
     # Thread Pool
     config.max_threads = ENV.fetch('RAILS_MAX_THREADS', 5).to_i
@@ -72,7 +81,7 @@ module ErrmonEventsApi
     ## RabbitMQ
     ##
 
-    config.rabbitmq_url = ENV['RABBITMQ_URL']
+    config.rabbitmq_url = Rails.application.credentials.rabbitmq_url || ENV['RABBITMQ_URL']
 
     ##
     ## Performance

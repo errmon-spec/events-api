@@ -1,10 +1,15 @@
 # See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
 
 # Ignore git directory.
+/.devcontainer/
 /.git/
+/.github/
+/.gitattributes
+/.gitignore
 
 # Ignore bundler config.
-/.bundle
+/.bundle/
+/vendor/bundle/
 
 # Ignore all environment files (except templates).
 /.env*
@@ -29,3 +34,14 @@
 !/storage/.keep
 /tmp/storage/*
 !/tmp/storage/.keep
+
+# Ignore docker-related files.
+/.dockerignore
+/Dockerfile
+
+# Ignore editor config files.
+/.ruby-lsp/
+/.vscode/
+
+# Other ignored files.
+/fly.toml
