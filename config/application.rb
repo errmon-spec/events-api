@@ -20,6 +20,9 @@ require 'rails/test_unit/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative '../lib/middleware/fly_client_ip_middleware'
+require_relative '../lib/middleware/fly_request_id_middleware'
+
 module ErrmonEventsApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -28,7 +31,7 @@ module ErrmonEventsApi
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets tasks])
+    # config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -43,16 +46,34 @@ module ErrmonEventsApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Middleware
+    if ENV['FLY_MACHINE_ID'].present?
+      config.middleware.insert_before ActionDispatch::RemoteIp, FlyClientIpMiddleware
+      config.middleware.insert_before ActionDispatch::RequestId, FlyRequestIdMiddleware
+
+      # Disable IP spoofing check and always trust the client IP
+      config.action_dispatch.ip_spoofing_check = false
+      Rack::Request.ip_filter = ->_ip { true }
+    end
+
+    # introspection: deployment name
+    # errmon-items-api-web
+    config.container_deployment_name = [
+      ENV.fetch('FLY_APP_NAME', 'errmon-items-api'),
+      ENV.fetch('FLY_PROCESS_GROUP', 'web'),
+    ].join('-')
+
+    # introspection: instance name
+    # errmon-items-api-web-e286501db05968
+    config.instance_name = [
+      config.container_deployment_name,
+      ENV.fetch('FLY_MACHINE_ID', 'local'),
+    ].join('-')
+
     # Errmon
     config.time_zone = 'Brasilia'
     config.i18n.available_locales = %i[en pt-BR]
     config.i18n.default_locale = :'pt-BR'
-
-    # Introspection
-    config.container_app_name = ENV['FLY_APP_NAME'] || 'errmon-events-api'
-    config.container_process = ENV['FLY_PROCESS_GROUP'] || 'web'
-    config.container_id = ENV['FLY_ALLOC_ID'] || 'local'
-    config.instance_name = "#{config.container_app_name}--#{config.container_process}-#{config.container_id}"
 
     # Security
     config.action_dispatch.tld_length = Integer(ENV['RAILS_TLD_LENGTH'] || 1)
@@ -65,7 +86,7 @@ module ErrmonEventsApi
     ## Postgres
     ##
 
-    config.database_url = ENV['DATABASE_URL']
+    config.database_url = ENV.fetch('DATABASE_URL') { Rails.application.credentials.database_url }
     config.database_statement_timeout = ENV.fetch('DATABASE_STATEMENT_TIMEOUT', '10s')
     config.database_connect_timeout = 1
     config.database_checkout_timeout = 1
@@ -81,7 +102,7 @@ module ErrmonEventsApi
     ## RabbitMQ
     ##
 
-    config.rabbitmq_url = Rails.application.credentials.rabbitmq_url || ENV['RABBITMQ_URL']
+    config.rabbitmq_url = ENV.fetch('RABBITMQ_URL') { Rails.application.credentials.rabbitmq_url }
 
     ##
     ## Performance

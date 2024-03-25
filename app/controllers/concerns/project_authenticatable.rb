@@ -14,6 +14,13 @@ module ProjectAuthenticatable
     end
   end
 
+  private
+
+  def append_info_to_payload(payload)
+    super
+    payload[:project_id] = project_id if project_id
+  end
+
   def authenticate_project!
     raise InvalidProjectCredentialsError if current_project.blank?
   end

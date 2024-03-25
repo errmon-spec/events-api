@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-Rack::Timeout::Logger.level = Logger::ERROR
+logger = SemanticLogger[Rack::Timeout]
+logger.level = :error
+
+Rack::Timeout::Logger.logger = logger

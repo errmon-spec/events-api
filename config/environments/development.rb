@@ -55,4 +55,35 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  ##
+  ## rails_semantic_logger
+  ##
+
+  config.colorize_logging = true
+  config.log_level = :debug
+  config.log_tags = nil
+
+  config.rails_semantic_logger.console_logger = false
+  config.rails_semantic_logger.format = :color
+
+  # Disable semantic logging
+  config.rails_semantic_logger.semantic = false
+  config.rails_semantic_logger.started = true
+  config.rails_semantic_logger.processing = true
+  config.rails_semantic_logger.rendered = true
+
+  # Configure Rails logger (stdout)
+  config.logger = ActiveSupport::Logger.new($stdout)
+    .tap  { |logger| logger.formatter = Logger::Formatter.new }
+    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+
+  # Log to stdout
+  $stdout.sync = true
+  config.rails_semantic_logger.add_file_appender = false
+  config.semantic_logger.add_appender(
+    io: $stdout,
+    formatter: config.rails_semantic_logger.format,
+    level: config.log_level,
+  )
 end

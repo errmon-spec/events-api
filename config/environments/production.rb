@@ -38,6 +38,9 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
   config.ssl_options = {
+    redirect: {
+      exclude: ->request { request.path == '/up' },
+    },
     hsts: {
       preload: true,
       subdomains: true,
@@ -51,12 +54,40 @@ Rails.application.configure do
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [:request_id]
+  config.log_tags = {
+    request_id: :request_id,
+    ip: :remote_ip,
+    region: ->request { request.env['HTTP_FLY_REGION'] },
+    user_agent: ->request { request.env['HTTP_USER_AGENT'] },
+  }
 
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
+
+  ##
+  ## rails_semantic_logger
+  ##
+
+  config.colorize_logging = false
+
+  config.rails_semantic_logger.console_logger = false
+  config.rails_semantic_logger.format = :json
+  config.rails_semantic_logger.filter = lambda do |log|
+    return false if log.payload && log.payload[:path] == '/up'
+
+    true
+  end
+
+  # Log to STDOUT
+  $stdout.sync = true
+  config.rails_semantic_logger.add_file_appender = false
+  config.semantic_logger.add_appender(
+    io: $stdout,
+    formatter: config.rails_semantic_logger.format,
+    level: config.log_level,
+  )
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -79,4 +110,7 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.hosts = [config.app_rails_host] if config.app_rails_host
+  config.host_authorization = {
+    exclude: ->request { request.path == '/up' },
+  }
 end
