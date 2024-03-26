@@ -1,15 +1,15 @@
 {
   "name": "errmon-events-api",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "devcontainer",
-	"runServices": [
-		"devcontainer"
-	],
-	"workspaceFolder": "/app",
-	"overrideCommand": false,
-	"initializeCommand": {
-		"assign-compose-project-name": "touch .env; grep -qwF COMPOSE_PROJECT_NAME .env || echo COMPOSE_PROJECT_NAME=errmon-events-api >> .env"
-	},
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "runServices": [
+    "devcontainer"
+  ],
+  "workspaceFolder": "/app",
+  "overrideCommand": false,
+  "initializeCommand": {
+    "assign-compose-project-name": "touch .env; grep -qwF COMPOSE_PROJECT_NAME .env || echo COMPOSE_PROJECT_NAME=errmon-events-api >> .env"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -20,7 +20,8 @@
         "exiasr.hadolint",
         "redhat.vscode-yaml",
         "shopify.ruby-lsp",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "timonwong.shellcheck"
       ],
       "settings": {
         "[json][jsonc]": {
