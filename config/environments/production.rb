@@ -86,7 +86,7 @@ Rails.application.configure do
   config.semantic_logger.add_appender(
     io: $stdout,
     formatter: config.rails_semantic_logger.format,
-    level: config.log_level,
+    filter: config.rails_semantic_logger.filter,
   )
 
   # Use a different cache store in production.

@@ -5,14 +5,11 @@ require 'sneakers/metrics/logging_metrics'
 
 rabbitmq_connection = Bunny.new(
   Rails.application.config.rabbitmq_url,
-  connection_name: "errmon-events-api-#{Rails.application.config.instance_name}",
-  heartbeat: 0,
+  connection_name: Rails.application.config.instance_name,
 )
 
 Sneakers.configure(
   connection: rabbitmq_connection,
-  amqp_heartbeat: nil,
-  heartbeat: 0,
   workers: 1,
   threads: Rails.application.config.max_threads,
   prefetch: Rails.application.config.max_threads,
@@ -36,4 +33,4 @@ Sneakers::ContentType.register(
   deserializer: ->payload { Oj.load(payload, mode: :compat, symbolize_names: true) },
 )
 
-Sneakers.logger.level = Logger::INFO
+Sneakers.logger.level = Logger::DEBUG
