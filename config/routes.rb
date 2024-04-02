@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   namespace :v1 do
-    post 'ingress/create'
+    resources :ingress, only: %i[create]
   end
 end

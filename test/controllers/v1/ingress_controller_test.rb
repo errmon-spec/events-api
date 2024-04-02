@@ -18,7 +18,7 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
       data: reported_item_attributes,
     }
 
-    post v1_ingress_create_url, headers: authorization_headers(project), params: reported_item_attributes
+    post v1_ingress_index_url, headers: authorization_headers(project), params: reported_item_attributes
 
     assert_response :accepted
     assert_published 'item.reported', expected_event_payload
@@ -34,14 +34,14 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
       stack_trace: 'app/models/user.rb:1:in `foo\'',
     }
 
-    post v1_ingress_create_url, headers: authorization_headers(project), params: payload
+    post v1_ingress_index_url, headers: authorization_headers(project), params: payload
 
     assert_response :unprocessable_entity
     assert_equal '{"errors":{"message":["deve estar presente"]}}', @response.body
   end
 
   test 'returns HTTP 401 without credentials' do
-    post v1_ingress_create_url
+    post v1_ingress_index_url
 
     assert_response :unauthorized
     assert_equal '{"error":"invalid project credentials"}', @response.body
@@ -50,7 +50,7 @@ class V1::IngressControllerTest < ActionDispatch::IntegrationTest
   test 'returns HTTP 401 with wrong credentials' do
     project = create(:project)
 
-    post v1_ingress_create_url,
+    post v1_ingress_index_url,
       headers: {
         'X-Errmon-Project-ID' => project.project_id,
         'X-Errmon-Project-Token' => 'wrong',
